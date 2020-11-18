@@ -5,24 +5,28 @@ $(document).ready(function () {
     let cardStyle = "";
     let playerURL = "";
     cardMaker();
+
     // this is creating a search for heroes button that will display a text box to enter hero name when clicked
     let nameSearchButton = $("<button>");
     nameSearchButton.attr("id", "nameSearchBtn");
     nameSearchButton.text("Search Supers By Name");
     $("#searchButtons").append(nameSearchButton);
     $("#nameSearchBtn").on("click", searchSuperByName);
+
     // this is creatin the search for heroes button that will display a text box to enter comic when clicked
     let comicSearchButton = $("<button>");
     comicSearchButton.attr("id", "comicSearchBtn");
     comicSearchButton.text("Search Supers By Comic");
     $("#searchButtons").append(comicSearchButton);
     $("#comicSearchBtn").on("click", searchSuperByComic);
+
     // this is creating the search for heroes button that will display letter buttons when clicked 
     let alphaSearchButton = $("<button>");
     alphaSearchButton.attr("id", "alphaSearchBtn");
     alphaSearchButton.text("Search Supers By Alphabet");
     $("#searchButtons").append(alphaSearchButton);
     $("#alphaSearchBtn").on("click", getHeroesAlphabet);
+
     // this is creating the search box and button and triggers the function heroSearch when button is clicked
     function searchSuperByName() {
         $("#heroPics").empty();
@@ -134,6 +138,7 @@ $(document).ready(function () {
         heroPic.attr("src", picSource);
         $("#modalInfo").append(heroPic, heroName);
         musicCall(nameSource);
+        
     }
     //this function makes a call to deezer api to pull bring back a song
     function musicCall(nameSource) {
@@ -205,12 +210,23 @@ $(document).ready(function () {
             let newCard = JSON.parse(localStorage.getItem(i));
             cards.push(newCard);
             console.log(cards);
+            
         }
         if (cards.length != null) {
             $("#card-gallery").empty();
             for (let i = 0; i < cards.length; i++) {
+                
+                //adding the the card flips 
+                let flipCard= $("<div>");
+                flipCard.addClass("flip-card");
+                let flipInner=$("<div>");
+                flipInner.addClass("flip-card-inner");
+                let flipFront=$("<div>");
+                flipFront.addClass("flip-card-front");
+
                 let cardEl = $("<div>");
                 cardEl.addClass("cardEl");
+
                 let cardStyle = cards[i].style;
                 cardEl.css("background-image", "url(" + cardStyle + ")");
                 let cardPic = $("<img>");
@@ -220,13 +236,22 @@ $(document).ready(function () {
                 cardName.text(cards[i].name);
                 cardName.addClass("cardName");
                 cardEl.append(cardPic, cardName);
-                $("#card-gallery").prepend(cardEl);
+
+                flipCard.append(flipInner);
+                flipInner.append(flipFront);
+                flipFront.append(cardEl);
+                $("#card-gallery").prepend(flipCard);
+                //$("#card-gallery").(,flipCard, flipInner, flipFront)
+
+                
             }
         }
         else {
             return;
         }
     }
+
+   
     // this event listener is triggered when you click a comic and displays the characters in that comic
     $(document).on("click", ".comicBtn", function (event) {
         $("#heroPics").empty();
